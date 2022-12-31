@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- 클라이언트 요청자원 매핑주소 추가작업 -->
+	<resources mapping="/bower_components/**" location="/resources/bower_components/" />
+	<resources mapping="/dist/**" location="/resources/dist/" />
+	<resources mapping="/css/**" location="/resources/css/" />
+	<resources mapping="/image/**" location="/resources/image/" />
+	
+	
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.demo.controller" />
+	
+	<!-- 파일업로드를 위한 bean설정작업. bean이름 multipartResolver 로 사용해야 한다. -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
+	
+	<!-- 파일업로드 폴더(상품이미지) : 프로젝트 외부폴더 -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<!-- 집: <beans:constructor-arg value="C:\\study\\upload\\goods\\" /> -->
+		<!-- 학원: --><beans:constructor-arg value="C:\\JAVA\\ezen_dev\\upload\\goods\\" />
+	</beans:bean>
+	
+	<!-- Ckeditor 파일업로드 폴더(상품이미지) : 프로젝트 외부폴더 -->
+	<beans:bean id="uploadCkeditor" class="java.lang.String">
+		<!-- 집: <beans:constructor-arg value="C:\\study\\upload\\goods\\" /> -->
+		<!-- 학원: --><beans:constructor-arg value="C:\\JAVA\\ezen_dev\\upload\\ckeditor\\" />
+	</beans:bean>
+	
+	<!-- 리눅스 우분트 경로 -->
+	<!-- 
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="C:\\study\\upload\\goods\\" />
+		<beans:constructor-arg value="C:\\JAVA\\ezen_dev\\upload\\goods\\" />
+	</beans:bean>
+	
+	<beans:bean id="uploadCkeditor" class="java.lang.String">
+		<beans:constructor-arg value="/usr/local/tomcat/upload/" />
+		<beans:constructor-arg value="/usr/local/tomcat/tomcat-9/webapps/upload/" />
+	</beans:bean>
+	 -->
+	
+		<!--maxUploadSize 전송되는 파일들의 전체크기 설정. 1024 * 1024 * 10 = 10mb -->
+		<!-- maxUploadSizePerFile 개별 하나의 파일크기 설정.  1024 * 1024 * 2 = 2mb -->
+		<!--uploadTempDir  서버에 업로드시 사용될 임시폴더 경로설정 -->
+		<!--maxInMemorySize 서버에 업로드시 사용될 서버측 사용메모리 설정. -->
+	<!-- 
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" value="utf-8" />
+	
+		<beans:property name="maxUploadSize" value="10485760" />
+		
+		<beans:property name="maxUploadSizePerFile" value="2097152" />
+		
+		<beans:property name="uploadTempDir" value="file:/C:/study/upload/tmp" />
+		
+		<beans:property name="maxInMemorySize" value="10485756" />
+	</beans:bean>
+	  -->
+	
+</beans:beans>

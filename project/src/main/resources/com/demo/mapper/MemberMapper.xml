@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.MemberMapper">
+
+<!-- 아이디 중복 확인 -->
+<select id="idCheck" resultType="String">
+	SELECT MEM_ID
+	FROM MEMBER_TBL
+	WHERE MEM_ID = #{mem_id}
+</select>
+
+<!-- 회원가입 정보 저장 -->
+<insert id="join">
+INSERT INTO MEMBER_TBL(
+					MEM_ID,
+					MEM_NAME,
+					MEM_PW, 
+					MEM_EMAIL, 
+					MEM_ZIPCODE, 
+					MEM_ADDR, 
+					MEM_ADDR_D, 
+					MEM_PHONE, 
+					MEM_NICK, 
+					MEM_ACCEPT_E 
+)
+VALUES (
+					#{mem_id},
+					#{mem_name},
+					#{mem_pw},
+					#{mem_email},
+					#{mem_zipcode},
+					#{mem_addr},
+					#{mem_addr_d},
+					#{mem_phone},
+					#{mem_nick},
+					#{mem_accept_e}
+)
+</insert>
+
+<!-- 로그인 인증 -->
+<select id="login_ok" resultType="com.demo.domain.MemberVO">
+SELECT
+	MEM_ID, 
+	MEM_NAME, 
+	MEM_PW, 
+	MEM_EMAIL, 
+	MEM_ZIPCODE, 
+	MEM_ADDR, 
+	MEM_ADDR_D, 
+	MEM_PHONE, 
+	MEM_NICK, 
+	MEM_ACCEPT_E, 
+	MEM_POINT, 
+	MEM_DATE_SUB, 
+	MEM_DATE_UP, 
+	MEM_DATE_LAST, 
+	MEM_AUTHCODE
+FROM 
+	MEMBER_TBL
+WHERE 
+	MEM_ID = #{mem_id}
+</select>
+
+<!-- 아이디 찾기 : 이름, 이메일 정보 있는지 확인 -->
+<select id="getNameEmailExists" resultType="String">
+SELECT MEM_ID
+FROM MEMBER_TBL
+WHERE 
+	MEM_NAME = #{mem_name}
+AND
+	MEM_EMAIL = #{mem_email}
+</select>
+
+<!-- 비밀번호 찾기 : 아이디, 이메일 정보 있는지 확인 -->
+<select id="getIDEmailExists" resultType="String">
+SELECT MEM_ID
+FROM MEMBER_TBL
+WHERE 
+	MEM_ID = #{mem_id}
+AND
+	MEM_EMAIL = #{mem_email}
+</select>
+
+<!-- 임시 비밀번호 저장 -->
+<update id="changePW">
+UPDATE
+	MEMBER_TBL
+SET
+	MEM_PW = #{enc_pw}
+WHERE 
+	MEM_ID = #{mem_id}
+</update>
+
+<!-- 회원정보 수정 -->
+<update id="modify">
+UPDATE
+	MEMBER_TBL
+SET
+	MEM_PW = #{mem_pw},
+	MEM_EMAIL = #{mem_email}, 
+	MEM_ZIPCODE = #{mem_zipcode}, 
+	MEM_ADDR = #{mem_addr}, 
+	MEM_ADDR_D = #{mem_addr_d}, 
+	MEM_PHONE = #{mem_phone}, 
+	MEM_NICK = #{mem_nick}, 
+	MEM_DATE_UP = SYSDATE	
+WHERE
+	MEM_ID = #{mem_id}
+</update>
+
+</mapper>

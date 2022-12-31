@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.AdminMapper">
+
+<!-- 로그인 -->
+<select id="admin_ok" resultType="com.demo.domain.AdminVO">
+SELECT ADMIN_ID, ADMIN_PW, ADMIN_NAME, ADMIN_DATE_LATE
+FROM ADMIN_TBL
+WHERE ADMIN_ID = #{admin_id}
+</select>
+
+<!-- 로그인 시간 업데이트 -->
+<update id="loginUpdate">
+UPDATE 
+	ADMIN_TBL
+SET
+	admin_date_late = SYSDATE
+WHERE
+	ADMIN_ID = #{admin_id}
+</update>
+
+ </mapper>
